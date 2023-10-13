@@ -2,6 +2,8 @@ return {
     default = {
         appearance  = {},
         isDead      = 0,
+        group       = "normal",
+
         job         = {
             job   = "unemployed",
             grade = 1
