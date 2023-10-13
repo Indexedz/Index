@@ -10,11 +10,6 @@ local groups = {
     permissions = {
       "command allow"
     }
-  },
-  {
-    name = "test",
-    include = {"normal", "JOB:mechanic[1]"},
-    permissions = {}
   }
 }
 

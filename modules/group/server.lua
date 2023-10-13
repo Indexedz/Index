@@ -22,7 +22,7 @@ local function rmGroup(target, name)
   local group = module.get(name);
 
   if not group then
-    return 
+    return
   end
 
   if (group.include) then
@@ -50,7 +50,7 @@ local function addGroup(target, name)
   local group = module.get(name);
 
   if not group then
-    return 
+    return
   end
 
   if (group.include) then
@@ -161,7 +161,7 @@ function module.load(src)
   local _, xCharacter = player.find(src);
   local group = xCharacter.get("group");
   local job = xCharacter.get("job");
-  addGroup(src, group.name)
+  addGroup(src, group)
   addGroup(src, ("JOB:%s[%s]"):format(job.job, job.grade))
 end
 
