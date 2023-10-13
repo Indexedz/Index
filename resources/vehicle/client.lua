@@ -1,10 +1,9 @@
 local hook     = import 'hook'
 local object   = import 'object'
 local player   = import 'player'
+local behavior = import 'behavior'
 local radar    = import 'radar'
 
-local behavior = player.behavior()
-local player   = player.localPlayer()
 local states   = {
     isIn    = player.useState(false, "@vehicle:isIn"),
     isEnter = player.useState(false, "@vehicle:isEnter"),

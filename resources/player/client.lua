@@ -2,11 +2,10 @@ local hook         = import 'hook';
 local callback     = import 'callback';
 local array        = import 'array';
 local player       = import 'player';
+local behavior     = import 'behavior';
 local spawn        = data 'spawn';
 local cam, cam2, lastcamindex, camloading
 
-local behavior     = player.behavior()
-local player       = player.localPlayer()
 local prepare      = hook.useState(true);
 local loaded       = player.useState(false, "loaded")
 local PlayerData   = player.useState({}, "data");

@@ -1,4 +1,4 @@
-local player = import 'player'.localPlayer();
+local player = import 'player';
 local data   = {
     player = data 'player'
 }

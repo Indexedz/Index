@@ -1,10 +1,9 @@
 local player        = import 'player'
+local behavior      = import 'behavior';
 local hook          = import 'hook';
 local callback      = import 'callback';
 local death         = data 'death';
 
-local behavior      = player.behavior()
-local player        = player.localPlayer()
 local isDead        = player.useState(false, "isDead");
 local preparing = false;
 
