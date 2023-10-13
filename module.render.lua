@@ -24,7 +24,7 @@ local function removeLastLine(chunk)
   return _chunk
 end
 
-function renderModule(chunk, data)
+function renderModule(chunk, data, package)
   if (not getLastLine(chunk) or not data or not chunk) then
     return error(("[ERROR] [MODULE] : cannot render module %s!"):format(data.name))
   end
@@ -32,6 +32,8 @@ function renderModule(chunk, data)
   local function_names = {}
   local pattern_dot = 'function%s+module%.(%w+)%((.-)%)'
   local pattern_colon = 'function%s+module%:(%w+)%((.-)%)'
+
+  local format = (package.format or {})[global.context] or nil
 
   for name, parameters in chunk:gmatch(pattern_dot) do
     local param_list = {}
@@ -48,7 +50,17 @@ function renderModule(chunk, data)
       table.insert(param_list, param)
     end
 
-    table.insert(function_names, { name = name, parameters = param_list, pattern = "colon" })
+    table.insert(function_names, { name = name, parameters = param_list, pattern = "dot" })
+  end
+
+  if format then
+    for i = 1, #function_names do
+      for x = 1, #format do
+        if function_names[i].name ~= format[x] then
+          function_names[i] = nil
+        end
+      end
+    end
   end
 
   local exportscripts = "";
@@ -94,7 +106,7 @@ function renderModule(chunk, data)
     ]]):format(data.parent, methodName, func.name)
 
     exportscripts = exportscripts .. methodCode;
-    
+
     if func.pattern == "colon" then
       _import = _import .. ([[
         function module:%s(...)
