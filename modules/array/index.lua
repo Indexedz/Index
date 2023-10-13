@@ -21,10 +21,24 @@ local tablePrototype = {
         end
         return filteredTable
     end,
-    push = function(self, value) 
-        table.insert(self, value); 
+    push = function(self, value)
+        table.insert(self, value);
 
         return self[1]
+    end,
+    unDuplicates = function(self)
+        local result = {}
+        local seen = {} -- A table to keep track of seen values
+
+        for i = 1, #self do
+            local value = self[i]
+            if not seen[value] then
+                table.insert(result, value)
+                seen[value] = true
+            end
+        end
+
+        return result
     end,
     cut = function(self, index)
         if type(index) == "number" and index >= 1 and index <= #self then
@@ -43,7 +57,7 @@ local tablePrototype = {
         for key, val in pairs(joinWith) do
             table.insert(self, val)
         end
-    
+
         return self
     end,
     clear = function(self)
@@ -55,19 +69,18 @@ local tablePrototype = {
 
 function module.new(table)
     local table = table or {};
-    setmetatable(table, {__index = tablePrototype});
+    setmetatable(table, { __index = tablePrototype });
 
     return table;
 end
 
 function module.pack(...)
     local table = table.pack(...) or {};
-    
+
     return module.new(table)
 end
 
 function module.data(path)
-    
     return module.new(data(path));
 end
 
