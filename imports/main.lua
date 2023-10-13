@@ -88,7 +88,8 @@ function _import(moduleName)
 		end;
 	end;
 
-	if (data.parent ~= global.resource and not package.classes) then
+	package.render = package.render == nil and true or false;
+	if (data.parent ~= global.resource and package.render) then
 		local object = Index:CallModule(moduleName)
 		return object()
 	end
@@ -104,8 +105,8 @@ function _import(moduleName)
 		return error("[ERROR] [MODULE] : " .. ("not found module %s!"):format(data.name));
 	end;
 
-	if (not package.classes) then
-		local main, child   = renderModule(chunk, data);
+	if (package.render) then
+		local main, child   = renderModule(chunk, data, package);
 
 		local mainFn, err   = load(main, path)
 		local childFn, err2 = load(child, path)
@@ -128,7 +129,6 @@ function _import(moduleName)
 		if (not fn or err) then
 			return error("[ERROR] [MODULE] : " .. (err));
 		end
-
 
 		loadedModule[data.name] = fn
 		return fn()
