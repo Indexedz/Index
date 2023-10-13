@@ -30,14 +30,25 @@ function renderModule(chunk, data)
   end
 
   local function_names = {}
-  local pattern = 'function%s+module%.(%w+)%((.-)%)'
-  for name, parameters in chunk:gmatch(pattern) do
+  local pattern_dot = 'function%s+module%.(%w+)%((.-)%)'
+  local pattern_colon = 'function%s+module%:(%w+)%((.-)%)'
+
+  for name, parameters in chunk:gmatch(pattern_dot) do
     local param_list = {}
     for param in parameters:gmatch("[^,%s]+") do
       table.insert(param_list, param)
     end
 
-    table.insert(function_names, { name = name, parameters = param_list })
+    table.insert(function_names, { name = name, parameters = param_list, pattern = "dot" })
+  end
+
+  for name, parameters in chunk:gmatch(pattern_colon) do
+    local param_list = {}
+    for param in parameters:gmatch("[^,%s]+") do
+      table.insert(param_list, param)
+    end
+
+    table.insert(function_names, { name = name, parameters = param_list, pattern = "colon" })
   end
 
   local exportscripts = "";
@@ -72,9 +83,6 @@ function renderModule(chunk, data)
 
       return args
     end
-
-
-
   ]];
 
   for _, func in ipairs(function_names) do
@@ -83,17 +91,29 @@ function renderModule(chunk, data)
             AddEventHandler(('__cfx_export_%s_%s'), function(setCB, ...)
                 setCB(module.%s)
             end)
-        ]]):format(data.parent, methodName, func.name)
+    ]]):format(data.parent, methodName, func.name)
 
     exportscripts = exportscripts .. methodCode;
-    _import = _import .. ([[
-            function module.%s(...)
-                local parameters = json.decode('%s')
-                local args = table.pack(...)
+    
+    if func.pattern == "colon" then
+      _import = _import .. ([[
+        function module:%s(...)
+            local parameters = json.decode('%s')
+            local args = table.pack(...)
 
-                return exports['%s']['%s'](self, table.unpack(parseArgs(parameters, args)))
-            end
-        ]]):format(func.name, json.encode(func.parameters), data.parent, methodName);
+            return exports['%s']['%s'](self, table.unpack(parseArgs(parameters, args)))
+        end
+      ]]):format(func.name, json.encode(func.parameters), data.parent, methodName);
+    else
+      _import = _import .. ([[
+        function module.%s(...)
+            local parameters = json.decode('%s')
+            local args = table.pack(...)
+
+            return exports['%s']['%s'](self, table.unpack(parseArgs(parameters, args)))
+        end
+      ]]):format(func.name, json.encode(func.parameters), data.parent, methodName);
+    end
   end
 
   _chunk = removeLastLine(chunk);
