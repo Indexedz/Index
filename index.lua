@@ -68,6 +68,15 @@ function debug(...)
 	end
 end
 
+AddEventHandler('onResourceStop', function (resourceName)
+	for name, fn in pairs(loadedData) do
+		if (name:find(("@%s/"):format(resourceName))) then
+			loadedData[name] = nil
+			warn("OVERRIDE DATA : " .. name)
+		end
+	end
+end)
+
 exports("PrepareModule", prepare)
 exports("ShareModule", function(moduleName, fn)
 	if shared['modules'][moduleName] then
