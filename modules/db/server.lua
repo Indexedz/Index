@@ -56,9 +56,9 @@ function module.update(table, conditions, updates)
 
         args:push(value)
         if not setFields then
-            setFields = field .. "=?"
+            setFields = "`"..field .. "`=?"
         else
-            setFields = setFields .. ", " .. field .. "=?"
+            setFields = setFields .. ", `" .. field .. "`=?"
         end
     end
 
@@ -71,9 +71,9 @@ function module.update(table, conditions, updates)
 
         whereArgs:push(value)
         if not where then
-            where = field .. "=?"
+            where = "`"..field .. "`=?"
         else
-            where = where .. " AND " .. field .. "=?"
+            where = where .. " AND `" .. field .. "`=?"
         end
     end
 
