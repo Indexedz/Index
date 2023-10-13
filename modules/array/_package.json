@@ -2,5 +2,5 @@
     "type": "shared",
     "client": "index.lua",
     "server": "index.lua",
-    "classes": true
+    "render": false
 }
