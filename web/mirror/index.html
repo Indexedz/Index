@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mirror</title>
+</head>
+
+<body>
+  <script>
+    window.addEventListener("message", function (event) {
+      let iframe = document.getElementById('mirror').contentWindow;
+      iframe.postMessage(event.data, "*");
+    })
+
+    window.onload = function () {
+      document.body.innerHTML += document.body.innerHTML + `
+            <iframe 
+              src="http://localhost:5173" 
+              style="
+                position:absolute; 
+                top:0; 
+                left:0; 
+                width: 100vw; 
+                height: 100vh; 
+                margin: 0; 
+                padding: 0" 
+                id='mirror'
+                frameBorder="0"
+              >
+            </iframe>`
+    }
+  </script>
+</body>
+
+</html>

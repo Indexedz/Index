@@ -1,0 +1,5 @@
+{
+    "type": "shared",
+    "client": "index.lua",
+    "server": "index.lua"
+}

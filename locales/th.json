@@ -1,0 +1,11 @@
+{
+    "lang_test": "test langs %s %s thx",
+    "category1" :{
+        "first": "test SUCCESS"
+    },
+    "category2" :{
+        "insider": {
+            "second": "test SICSDAS"
+        }
+    }
+}
