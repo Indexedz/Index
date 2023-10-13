@@ -1,5 +1,4 @@
 {
-    "type": "shared",
-    "client": "client.lua",
+    "type": "server",
     "server": "server.lua"
 }
