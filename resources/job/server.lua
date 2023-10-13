@@ -18,12 +18,13 @@ local function setJob(playerId, jobName, jobGrade)
     if not xJob then return end
     if not xJob.grade(jobGrade) then return end
 
+    local oldJob = xCharacter.get("job");
     xCharacter:set("job", {
         job     = xJob.name,
         grade   = jobGrade
     }, false, function(value)
-        server.trigger("@player:job", "changed", playerId, value)
-        xPlayer:trigger("Index.player.job:changed", value)
+        server.trigger("@player:job", "changed", playerId, value, oldJob)
+        xPlayer:trigger("Index.player.job:changed", value, oldJob)
     end)
 end
 
